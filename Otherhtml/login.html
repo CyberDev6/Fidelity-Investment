@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIDELITY - Account Access Portal</title>
+<style>
+:root {
+--bg-dark: #0f0f11;
+--card-bg: #16161a;
+--card-sub-bg: #1e1e24;
+--text-white: #ffffff;
+--text-muted: #8e8e93;
+--accent-green: #00ff87;
+--green-gradient: linear-gradient(135deg, #11998e, #38ef7d);
+--border-color: #2a2a32;
+}
+
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+background-color: var(--bg-dark);
+color: var(--text-white);
+padding: 20px;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+}
+
+.container {
+width: 100%;
+max-width: 440px;
+}
+
+.card {
+background-color: var(--card-bg);
+border-radius: 16px;
+padding: 32px;
+border: 1px solid var(--border-color);
+box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.brand-header {
+text-align: center;
+margin-bottom: 24px;
+}
+
+.brand-logo {
+font-size: 28px;
+font-weight: 800;
+letter-spacing: 2px;
+background: var(--green-gradient);
+-webkit-background: text;
+-webkit-text-fill-color: transparent;
+}
+
+.page-title {
+font-size: 20px;
+font-weight: 700;
+margin-bottom: 6px;
+text-align: center;
+}
+
+.page-subtitle {
+color: var(--text-muted);
+font-size: 14px;
+text-align: center;
+margin-bottom: 24px;
+}
+
+/* Auto-Generation Highlight Panel */
+.info-callout {
+background-color: rgba(0, 255, 135, 0.05);
+border: 1px dashed rgba(0, 255, 135, 0.25);
+border-radius: 12px;
+padding: 16px;
+margin-bottom: 24px;
+}
+
+.callout-title {
+font-size: 13px;
+color: var(--accent-green);
+font-weight: 700;
+letter-spacing: 0.5px;
+margin-bottom: 10px;
+text-align: center;
+}
+
+.info-line {
+display: flex;
+justify-content: space-between;
+padding: 6px 0;
+font-size: 14px;
+}
+
+.info-val {
+font-family: monospace;
+font-weight: 700;
+color: var(--text-white);
+}
+
+.input-group {
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 18px;
+}
+
+.input-label {
+font-size: 13px;
+color: var(--text-muted);
+}
+
+.form-input {
+width: 100%;
+background-color: var(--card-sub-bg);
+border: 1px solid var(--border-color);
+border-radius: 10px;
+padding: 14px;
+color: var(--text-white);
+font-size: 15px;
+outline: none;
+transition: border-color 0.2s;
+}
+
+.form-input:focus {
+border-color: #38ef7d;
+}
+
+.primary-btn {
+width: 100%;
+background: var(--green-gradient);
+color: #000000;
+border: none;
+border-radius: 12px;
+padding: 16px;
+font-size: 16px;
+font-weight: 700;
+cursor: pointer;
+margin-top: 6px;
+}
+
+.switch-page-link {
+text-align: center;
+margin-top: 20px;
+font-size: 14px;
+color: var(--text-muted);
+}
+
+.switch-page-link a {
+color: var(--accent-green);
+text-decoration: none;
+font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<div class="brand-header">
+<div class="brand-logo">FIDELITY</div>
+</div>
+
+<div class="card">
+<div class="page-title">Sign In to Secure Panel</div>
+<div class="page-subtitle">Welcome back. Enter access keys to enter dashboard.</div>
+
+<!-- CREDENTIALS CONTAINER: Only pops up if they just filled the details on Page 1 -->
+<div class="info-callout" id="credentialsCallout" style="display: none;">
+<div class="callout-title">🔒 PROFILE SECURITY CREDENTIALS INSTANTLY GENERATED</div>
+<div class="info-line">
+<span style="color: var(--text-muted);">Username:</span>
+<span class="info-val" id="textUser"></span>
+</div>
+<div class="info-line">
+<span style="color: var(--text-muted);">Password:</span>
+<span class="info-val" id="textPass"></span>
+</div>
+</div>
+
+<form id="authForm">
+<div class="input-group">
+<label class="input-label">Username</label>
+<input type="text" class="form-input" id="loginUser" required placeholder="Enter username">
+</div>
+
+<div class="input-group">
+<label class="input-label">Password</label>
+<input type="password" class="form-input" id="loginPass" required placeholder="Enter password">
+</div>
+
+<button type="submit" class="primary-btn">Sign In</button>
+</form>
+
+<div class="switch-page-link">
+Don't have an account? <a href="./register.html">Register here</a>
+</div>
+</div>
+</div>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+// Pull down details instantly generated from Page 1
+const savedUser = localStorage.getItem('tempUser');
+const savedPass = localStorage.getItem('tempPass');
+
+if (savedUser && savedPass) {
+// Show them exactly what keys were made
+document.getElementById('textUser').innerText = savedUser;
+document.getElementById('textPass').innerText = savedPass;
+document.getElementById('credentialsCallout').style.display = 'block';
+
+// Automatically fill the fields so they can click login without friction
+document.getElementById('loginUser').value = savedUser;
+document.getElementById('loginPass').value = savedPass;
+}
+});
+
+document.getElementById('authForm').addEventListener('submit', function(e) {
+e.preventDefault();
+
+// Make sure username field persists inside memory for dashboard profile rendering loops
+const finalUser = document.getElementById('loginUser').value.trim();
+localStorage.setItem('tempUser', finalUser);
+
+// Redirect cleanly over to your dashboard.html file
+window.location.href = "dashboard.html";
+});
+</script>
+</body>
+</html>

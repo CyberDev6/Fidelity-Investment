@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule a Session | Guidance Advisor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Base Reset & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-green: #0E4B33;    /* Premium forest green */
+            --light-green: #E8F2ED;      /* Soft tint background */
+            --pure-white: #FFFFFF;
+            --text-dark: #1E293B;       /* Dark slate */
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --input-bg: #F8FAFC;
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Layout Containers --- */
+        .container {
+            width: 90%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 50px 0;
+        }
+
+        /* --- Header --- */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--pure-white);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+
+        .back-btn {
+            color: var(--primary-green);
+            font-size: 1.25rem;
+            text-decoration: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            background-color: var(--light-green);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Page Title / Hero Intro --- */
+        .page-intro {
+            text-align: center;
+            background: linear-gradient(180deg, var(--light-green) 0%, var(--pure-white) 100%);
+            padding: 40px 0 10px 0;
+        }
+
+        .page-intro h1 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .page-intro p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Form & Expert Grid Setup --- */
+        .booking-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* --- Schedule Form Card --- */
+        .booking-card {
+            background: var(--pure-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(14, 75, 51, 0.02);
+        }
+
+        .booking-card h2 {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            border-radius: 6px;
+            color: var(--text-dark);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-green);
+            background-color: var(--pure-white);
+            box-shadow: 0 0 0 3px rgba(14, 75, 51, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: var(--pure-white);
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #082d1f;
+            transform: translateY(-1px);
+        }
+
+        /* --- Sidebar: Trusted Advisors --- */
+        .advisors-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.3rem;
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .advisor-profile {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .advisor-profile:hover {
+            border-color: var(--primary-green);
+        }
+
+        .advisor-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            border: 2px solid var(--pure-white);
+            box-shadow: 0 0 0 2px var(--primary-green);
+        }
+
+        .advisor-info h3 {
+            font-size: 1.1rem;
+            color: var(--primary-green);
+            margin-bottom: 2px;
+        }
+
+        .advisor-info .role {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .advisor-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Footer Component --- */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 992px) {
+            .booking-layout {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .page-intro h1 {
+                font-size: 2rem;
+            }
+            .booking-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="../index.html" class="back-btn" aria-label="Go Back">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">Guidance</div>
+        <div style="width: 40px;"></div> </header>
+
+    <main>
+        <section class="page-intro">
+            <div class="container">
+                <h1>Speak to an Expert Advisor</h1>
+                <p>Get personalized guidance on navigating your dashboard securely, managing your configurations, or clarifying any protection protocols.</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="booking-layout">
+                
+                <div class="booking-card">
+                    <h2>Book Your Free Consultation</h2>
+                    <form action="#" method="POST">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Preferred Date</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Preferred Time</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Choose Advisor Group</label>
+                            <select class="form-control">
+                                <option>Security & Account Protection Team</option>
+                                <option>General Asset Navigation Support</option>
+                                <option>Technical Integration Specialist</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">What can we help you with? (Optional)</label>
+                            <textarea class="form-control" placeholder="Briefly describe what you'd like to discuss during the session..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">Confirm Appointment Schedule</button>
+                    </form>
+                </div>
+
+                <div class="advisors-sidebar">
+                    <div>
+                        <h2 class="sidebar-title">Our Certified Experts</h2>
+                        <p class="sidebar-desc">Dedicated, vetted professionals chosen to guarantee your peace of mind.</p>
+                    </div>
+
+                    <div class="advisor-profile">
+                        <div class="advisor-avatar">AM</div>
+                        <div class="advisor-info">
+                            <h3>Amina Mensah</h3>
+                            <div class="role">Senior Security Consultant</div>
+                            <p>Specializes in active threat evaluation, configuration workflows, and secure access protocols.</p>
+                        </div>
+                    </div>
+
+                    <div class="advisor-profile">
+                        <div class="advisor-avatar">DO</div>
+                        <div class="advisor-info">
+                            <h3>David Okonjo</h3>
+                            <div class="role">Identity & Protection Specialist</div>
+                            <p>Expert in helping users protect account interfaces and deploy secure multi-factor controls seamlessly.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guidance Platform. All rights secured.</p>
+    </footer>
+
+</body>
+</html>

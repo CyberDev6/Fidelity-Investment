@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fidelity Investments - Official Site</title>
+<style>
+:root {
+--fid-green: #327c1b;
+--fid-hover-green: #265e14;
+--text-dark: #1a1a1a;
+--text-gray: #4d4d4d;
+--bg-light: #f5f7f9;
+--border: #cccccc;
+}
+
+body {
+font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+margin: 0;
+padding: 0;
+color: var(--text-dark);
+line-height: 1.5;
+overflow-x: hidden;
+}
+
+/* --- HEADER --- */
+header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 12px 5%;
+border-bottom: 1px solid var(--border);
+background: #fff;
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+.logo { font-size: 30px; font-weight: 900; color: var(--fid-green); font-style: italic; letter-spacing: -1px; }
+.login-btn {
+background: var(--fid-green);
+color: white;
+padding: 10px 30px;
+border-radius: 25px;
+text-decoration: none;
+font-weight: bold;
+transition: 0.3s;
+}
+.login-btn:hover { background: var(--fid-hover-green); }
+
+/* --- HERO SECTION --- */
+.hero { padding: 60px 5%; max-width: 1200px; margin: auto; }
+.hero h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 300; margin-bottom: 10px; }
+.hero p { font-size: 22px; margin-bottom: 35px; }
+.btn-row { display: flex; gap: 15px; flex-wrap: wrap; }
+
+.btn { padding: 15px 35px; border-radius: 30px; font-weight: bold; text-decoration: none; font-size: 18px; text-align: center; }
+.btn-green { background: var(--fid-green); color: white; border: 2px solid var(--fid-green); }
+.btn-outline { background: transparent; color: var(--text-dark); border: 2px solid var(--text-dark); }
+
+.hero-img { width: 100%; height: auto; border-radius: 8px; margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+/* --- WHY CHOOSE SECTION --- */
+.why-choose { padding: 80px 5%; max-width: 1100px; margin: auto; }
+.why-choose h2 { font-size: 36px; margin-bottom: 25px; }
+.why-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+.why-item { border-left: 4px solid var(--fid-green); padding-left: 20px; }
+.why-item h3 { margin: 0 0 10px 0; color: var(--fid-green); }
+
+/* --- INTERACTIVE QUIZ SECTION --- */
+.quiz-section { background: #eef4ff; padding: 80px 5%; text-align: center; }
+.quiz-card { background: #fff; max-width: 850px; margin: auto; padding: 50px; border-radius: 15px; text-align: left; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
+.quiz-box { border: 1px solid #ddd; padding: 30px; border-radius: 8px; margin-top: 30px; }
+.radio-group { margin: 20px 0; }
+.radio-option { display: block; padding: 15px; border: 1px solid #eee; margin-bottom: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+.radio-option:hover { background: #f9f9f9; }
+
+/* --- BROKERAGE DETAILS --- */
+.split-section { display: flex; align-items: center; flex-wrap: wrap; padding: 80px 5%; max-width: 1200px; margin: auto; gap: 50px; }
+.split-content { flex: 1; min-width: 300px; }
+.split-image { flex: 1; min-width: 300px; text-align: center; }
+.split-image img { max-width: 100%; border-radius: 12px; }
+
+/* --- ADVISOR SECTION --- */
+.advisor { background: #fff; text-align: center; padding: 80px 5%; }
+.advisor img { width: 100%; max-width: 900px; border-radius: 10px; margin: 30px 0; }
+
+/* --- LEGAL FOOTER (The Long Part) --- */
+footer { background: #f5f5f5; padding: 60px 5%; border-top: 1px solid #ddd; color: var(--text-gray); font-size: 14px; }
+.footer-container { max-width: 1100px; margin: auto; }
+.footer-nav { margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #ddd; }
+.footer-nav a { text-decoration: none; color: #0056b3; margin-right: 20px; font-weight: bold; }
+
+.legal-block { margin-bottom: 25px; line-height: 1.6; }
+.legal-block strong { color: #333; }
+.address-box { margin-top: 40px; padding-top: 20px; border-top: 2px solid #327c1b; font-weight: bold; }
+
+/* --- RESPONSIVENESS --- */
+@media (max-width: 768px) {
+.hero h1 { font-size: 36px; }
+.split-section { flex-direction: column; text-align: center; }
+.btn-row { justify-content: center; }
+.quiz-card { padding: 25px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">Fidelity</div>
+<a href="./Otherhtml/register.html" class="login-btn">Log in</a>
+</header>
+
+<section class="hero">
+<h1>Invest today and<br>plan for tomorrow</h1>
+<p>We can help you get started.</p>
+<div class="btn-row">
+<a href="./Otherhtml/register.html" class="btn btn-green">Open an account</a>
+<a href="./Otherhtml/guidance.html" class="btn btn-outline">I need guidance</a>
+</div>
+<img src="./photos/standing.jpg" class="hero-img" alt="Landscape">
+</section>
+
+<section class="why-choose">
+<h2>Why choose Fidelity?</h2>
+<div class="why-list">
+<div class="why-item">
+<h3>Straightforward</h3>
+<p>A clear experience designed to help you make informed decisions.</p>
+</div>
+<div class="why-item">
+<h3>Integrated</h3>
+<p>A wide range of tools and products that work together for you.</p>
+</div>
+<div class="why-item">
+<h3>Transparent</h3>
+<p>Value and honesty at every step of your financial journey.</p>
+</div>
+</div>
+</section>
+
+<section class="quiz-section">
+<div class="quiz-card">
+<h2>Looking for something else?</h2>
+<p>Answer a few questions about your goals and we'll show account options that could work for you.</p>
+<a href="./Otherhtml/register.html" class="btn btn-outline" style="padding: 10px 25px; font-size: 16px;">Get started</a>
+
+<div class="quiz-box">
+<h3 style="margin-top:0;">How would you like to get started?</h3>
+<div class="radio-group">
+<label class="radio-option"><input type="radio" name="goal"> <strong>Save</strong> - For long and short-term goals</label>
+<label class="radio-option"><input type="radio" name="goal"> <strong>Manage cash</strong> - For spending and day-to-day</label>
+<label class="radio-option"><input type="radio" name="goal"> <strong>Invest</strong> - For stocks, bonds, and ETFs</label>
+<label class="radio-option"><input type="radio" name="goal"> <strong>Find an advisor</strong> - Professional management</label>
+</div>
+<button class="btn btn-green" style="width: 100%;">Continue</button>
+</div>
+</div>
+</section>
+
+<section class="split-section">
+<div class="split-content">
+<h2>Invest smart from the start with a brokerage account</h2>
+<p><strong>$0 account fees²</strong><br>Keep more of your money working for you.</p>
+<p><strong>$0 commissions¹</strong><br>Online U.S. stock and ETF trades are free.</p>
+<p><strong>Trade any amount³</strong><br>Buy fractions of shares for as little as $1.</p>
+<br>
+<a href="./Otherhtml/register.html" class="btn btn-green">Open a brokerage account</a>
+</div>
+<div class="split-image">
+<img src="./photos/phone.jpg" alt="Fidelity App">
+</div>
+</section>
+
+<section class="advisor">
+<h2>A partner to help bring your plans to life</h2>
+<p>Collaborate with a dedicated Fidelity <br>
+    advisor to build a comprehensive wealth <br>
+     management strategy designed to help <br>
+      you meet your goals and evolving needs.</p>
+<img src="./photos/advisor.jpg" alt="Meeting with advisors">
+<br>
+<a href="./Otherhtml/Advisor.html" class="btn btn-green">Find an advisor</a>
+</section>
+
+<footer>
+<div class="footer-container">
+<div class="footer-nav">
+<a href="#">Careers</a> <a href="#">News Releases</a> <a href="#">About Fidelity</a> <a href="#">International</a>
+</div>
+
+<div class="legal-block">
+<strong>Keep in mind that investing involves risk. The value of your investment will fluctuate over time, and you may gain or lose money.</strong>
+</div>
+
+<div class="legal-block">
+1. <strong>$0.00 commission</strong> applies to online U.S. equity trades and exchange-traded funds (ETFs) in a Fidelity retail account only for Fidelity Brokerage Services LLC retail clients. Sell orders are subject to an activity assessment fee (historically from $0.01 to $0.03 per $1,000 of principal). Other exclusions and conditions may apply. A limited number of ETFs are subject to a transaction-based service fee of $100. See full list at Fidelity.com/commissions. Employee equity compensation transactions and accounts managed by advisors or intermediaries through Fidelity Institutional® are subject to different commission schedules.
+</div>
+
+<div class="legal-block">
+2. <strong>Zero account fees:</strong> minimums and zero account fees apply to retail brokerage accounts only. Expenses charged by investments (e.g., funds, managed accounts, and certain HSAs) and commissions, interest charges, or other expenses for transactions may still apply. See Fidelity.com/commissions for further details.
+</div>
+
+<div class="legal-block">
+3. <strong>Fractional Shares:</strong> quantities can be entered out to 3 decimal places (.001) as long as the value of the order is at least $1.00. Dollar-based trades can be entered out to 2 decimal places (e.g. $250.00).
+</div>
+
+<div class="legal-block">
+4. <strong>For a distribution:</strong> to be considered qualified, the 5-year aging requirement has to be satisfied, and you must be age 59½ or older or meet one of several exemptions (disability, qualified first-time home purchase, or death among them).
+</div>
+
+<div class="legal-block">
+5. <strong>With respect to federal taxation only.</strong> Contributions, investment earnings, and distributions may or may not be subject to state taxation.
+</div>
+
+<div class="legal-block">
+6. <strong>There are zero account fees and zero account minimums for Fidelity HSAs® offered through Fidelity.com to individuals and employers.</strong>There may be commissions, interest charges, and other expenses associated with transacting or holding specific investments (e.g., mutual funds), or selecting certain account features or types (e.g., managed accounts). When a Fidelity HSA® is offered as part of an employer’s benefits package (which occurs through NetBenefits®), Fidelity charges the employer a recordkeeping fee. This is a common fee charged by HSA providers. This fee may be up to $48/year, but it could be reduced or waived depending on the HSA balance. Employers may pass this fee on to their employees. Contact the employer for more information. Accounts that have been opened through, or are serviced by, an intermediary, or in connection with your workplace benefits, may incur additional fees or restrictions. Account minimums may apply to certain investments, including the purchase of some Fidelity mutual funds that have a minimum investment requirement. If you choose to invest in mutual funds, underlying fund expenses still apply. For more information and details, see the fund's prospectus and/or www.fidelity.com/commissions.
+</div>
+
+<div class="legal-block">
+7. <strong>529 distributions for qualified education expenses are generally federal income tax free.</strong>529 assets may be used to pay for (i) qualified higher education expenses, (ii) qualified expenses for registered apprenticeship programs, (iii) up to $10,000 per taxable year per beneficiary for tuition expenses in connection with enrollment at a public, private, or religious elementary or secondary educational institution. Although such assets may come from multiple 529 accounts, the $10,000 qualified withdrawal limit will be aggregated on a per beneficiary basis. The IRS has not provided guidance to date on the methodology of allocating the $10,000 annual maximum among withdrawals from different 529 accounts, and (iv) amounts paid as principal or interest on any qualified education loan of a 529 plan designated beneficiary or a sibling of the designated beneficiary. The amount treated as a qualified expense is subject to a lifetime limit of $10,000 per individual. Although the assets may come from multiple 529 accounts, the $10,000 withdrawal limit for qualified educational loans payments will be aggregated on a per individual basis. The IRS has not provided guidance to date on the methodology of allocating the $10,000 annual maximum among withdrawals from different 529 accounts. Any earnings on distributions not used for qualified higher educational expenses or that exceed distribution limits may be taxed as ordinary income and may be subject to a 10% federal tax penalty. Some states do not conform with federal tax law. Please check with your home state to determine if it recognizes the expanded 529 benefits afforded under federal tax law, including distributions for elementary and secondary education expenses, apprenticeship programs, and student loan repayments. You may want to consult with a tax professional before investing or making distributions.
+
+</div>
+
+<div class="legal-block">
+<strong>The information provided herein is general in nature. It is not intended, </strong>nor should it be construed, as legal or tax advice. Because the administration of an HSA is a taxpayer responsibility, you are strongly encouraged to consult your tax advisor before opening an HSA. You are also encouraged to review information available from the Internal Revenue Service (IRS) for taxpayers, which can be found on the IRS website at IRS.gov. You can find IRS Publication 969, Health Savings Accounts and Other Tax-Favored Health Plans, and IRS Publication 502, Medical and Dental Expenses, online, or you can call the IRS to request a copy of each at 800-829-3676.
+
+</div>
+
+
+
+
+
+
+</footer>
+
+</body>
+</html>

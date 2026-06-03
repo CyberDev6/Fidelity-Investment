@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Safety & Security | Guidance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- Base Reset & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-green: #0E4B33;    /* Professional deep forest green */
+            --light-green: #E8F2ED;      /* Soft accent green background */
+            --pure-white: #FFFFFF;
+            --text-dark: #1E293B;       /* Professional dark slate text */
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Layout Containers --- */
+        .container {
+            width: 90%;
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 60px 0;
+        }
+
+        .small-container {
+            max-width: 750px;
+        }
+
+        /* --- Header Component --- */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--pure-white);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+        }
+
+        .back-btn {
+            color: var(--primary-green);
+            font-size: 1.25rem;
+            text-decoration: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            background-color: var(--light-green);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            letter-spacing: -0.5px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            text-align: center;
+            background: linear-gradient(180deg, var(--light-green) 0%, var(--pure-white) 100%);
+            padding: 40px 0 20px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--pure-white);
+            color: var(--primary-green);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            color: var(--primary-green);
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 35px auto;
+        }
+
+        /* --- Buttons --- */
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: var(--pure-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #082d1f;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--pure-white);
+            color: var(--primary-green);
+            border: 1px solid var(--primary-green);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-green);
+            transform: translateY(-2px);
+        }
+
+        /* --- Section Global Titles --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-green);
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+        }
+
+        /* --- Pillar Cards Grid --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 35px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: var(--primary-green);
+            box-shadow: 0 10px 30px rgba(14, 75, 51, 0.05);
+        }
+
+        .icon-box {
+            color: var(--primary-green);
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--primary-green);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Statistics Callout Section --- */
+        .stats-section {
+            background-color: var(--primary-green);
+            color: var(--pure-white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        /* --- FAQ Layout Section --- */
+        .faq-section {
+            background-color: #FAFAFA;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .faq-item {
+            background-color: var(--pure-white);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary-green);
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Footer Component --- */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="../index.html" class="back-btn" aria-label="Go Back">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="logo">Guidance</div>
+        <div style="width: 40px;"></div> </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <span class="badge">Your Security, Our Priority</span>
+                <h1>You are completely safe with us.</h1>
+                <p>We combine military-grade encryption, proactive monitoring, and a dedicated safety team to ensure your digital asset environment is completely secure. Relax—we've got you covered.</p>
+                <div class="hero-actions">
+                    <a href="#explore" class="btn btn-primary">How We Protect You</a>
+                    <a href="#faqs" class="btn btn-secondary">Have Questions?</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="explore" class="pillars-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Engineered for Absolute Protection</h2>
+                    <p>Security isn't a feature we added later; it is the core foundation of everything we build.</p>
+                </div>
+                
+                <div class="grid">
+                    <div class="card">
+                        <div class="icon-box">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <h3>Bank-Grade Encryption</h3>
+                        <p>All data traversing our systems is encrypted end-to-end using advanced AES-256 protocols. Your information remains completely unreadable to unauthorized eyes.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon-box">
+                            <i class="fas fa-user-lock"></i>
+                        </div>
+                        <h3>Privacy First Identity</h3>
+                        <p>We respect your privacy. Multi-factor authentication (MFA) and biometric checkpoints protect your profile access, ensuring only you hold the keys.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon-box">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>24/7 Expert Monitoring</h3>
+                        <p>Our threat detection systems operate round-the-clock, identifying and countering potential vulnerabilities before they ever reach your screen.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container stats-grid">
+                <div class="stat-item">
+                    <div class="stat-num">100%</div>
+                    <div class="stat-label">Encrypted Data Transfer</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">99.9%</div>
+                    <div class="stat-label">System Uptime & Reliability</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">24/7</div>
+                    <div class="stat-label">Dedicated Support Desk</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faqs" class="faq-section">
+            <div class="container small-container">
+                <div class="section-title">
+                    <h2>Frequently Asked Questions</h2>
+                    <p>Clear, direct answers about your safety and account protection.</p>
+                </div>
+
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>How do I know my personal information is actually safe?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We store all sensitive data on isolated, firewalled servers with restricted physical access. We routinely undergo external independent audits to verify compliance with global security regulations.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What happens if someone attempts to compromise my account?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our automated systems will flag suspicious activity, lock down access instantly, and alert you via email or SMS text to confirm your identity safely.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guidance Platform. All rights secured.</p>
+    </footer>
+
+</body>
+</html>
