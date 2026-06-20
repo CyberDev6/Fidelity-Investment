@@ -536,7 +536,7 @@ width: 100%;
 background-color: var(--bg-card);
 border-top: 1px solid var(--border-color);
 display: grid;
-grid-template-columns: repeat(5, 1fr);
+grid-template-columns: repeat(6, 1fr); /* Upgraded from 5 to 6 elements to fully support support routes */
 padding: 10px 0;
 z-index: 999;
 }
@@ -883,6 +883,70 @@ margin-top: 14px;
 border-top: 1px dashed var(--border-color);
 padding-top: 14px;
 }
+
+/* CUSTOMER CARE TELEGRAM BANNER COMPONENT */
+.customer-care-banner {
+background: linear-gradient(135deg, rgba(0, 255, 102, 0.05) 0%, rgba(20, 23, 26, 0.9) 100%);
+border: 1px solid var(--color-green);
+border-radius: 16px;
+padding: 18px;
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+box-shadow: 0 4px 15px rgba(0, 255, 102, 0.05);
+}
+
+.care-content {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+
+.care-icon-box {
+width: 44px;
+height: 44px;
+background-color: var(--color-green-dim);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--color-green);
+font-size: 1.2rem;
+flex-shrink: 0;
+}
+
+.care-text-node h4 {
+font-size: 0.95rem;
+font-weight: 600;
+margin-bottom: 2px;
+color: var(--color-white);
+}
+
+.care-text-node p {
+font-size: 0.75rem;
+color: var(--color-muted);
+}
+
+.btn-care-connect {
+background-color: var(--color-green);
+color: var(--bg-main);
+padding: 10px 16px;
+border-radius: 10px;
+font-size: 0.8rem;
+font-weight: 700;
+text-decoration: none;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+transition: all 0.2s ease;
+white-space: nowrap;
+}
+
+.btn-care-connect:active {
+transform: scale(0.96);
+}
 </style>
 </head>
 <body>
@@ -899,6 +963,21 @@ padding-top: 14px;
 </div>
 
 <div class="container">
+
+<div class="customer-care-banner">
+<div class="care-content">
+<div class="care-icon-box">
+<i class="fa-solid fa-headset"></i>
+</div>
+<div class="care-text-node">
+<h4>Customer Support</h4>
+<p>Get instant response via Telegram 24/7</p>
+</div>
+</div>
+<a href="https://t.me/+1462678844" target="_blank" class="btn-care-connect">
+<i class="fa-brands fa-telegram"></i> Chat Now
+</a>
+</div>
 
 <div class="collapsible-profile-trigger" id="profileTrigger">
 <span><i class="fa-solid fa-circle-user" style="color: var(--color-green); margin-right: 8px;"></i> View Full Verification Profile</span>
@@ -920,7 +999,7 @@ padding-top: 14px;
 <span><i class="fa-solid fa-wallet"></i> Account Balance</span>
 <i class="fa-regular fa-eye"></i>
 </div>
-<div class="main-balance-digits" id="liveBalanceField">$50,000.00</div>
+<div class="main-balance-digits" id="liveBalanceField">$74,999.00</div>
 <div class="timestamp-text" id="liveTimestampText">Last updated: Jun 03, 2026 1:58 AM</div>
 
 <div class="action-split-row">
@@ -935,7 +1014,7 @@ padding-top: 14px;
 <div class="stats-subgrid">
 <div class="subgrid-card">
 <div class="label">Profits <i class="fa-solid fa-dollar-sign"></i></div>
-<div class="value" id="liveProfitsStat">$0.00</div>
+<div class="value" id="liveProfitsStat">$74,999.00</div>
 </div>
 <div class="subgrid-card">
 <div class="label">Bonus <i class="fa-solid fa-gift"></i></div>
@@ -943,7 +1022,7 @@ padding-top: 14px;
 </div>
 <div class="subgrid-card">
 <div class="label">Deposits <i class="fa-solid fa-arrow-down"></i></div>
-<div class="value" id="liveDepositStat">$50,000.00</div>
+<div class="value" id="liveDepositStat">$10,000.00</div>
 </div>
 <div class="subgrid-card">
 <div class="label">Withdrawals <i class="fa-solid fa-arrow-up"></i></div>
@@ -1272,6 +1351,10 @@ I certify that the information provided is fully correct and my uploaded investm
 <i class="fa-solid fa-circle-user"></i>
 <span>Profile</span>
 </button>
+<a href="https://t.me/+1462678844" target="_blank" class="nav-dock-element">
+<i class="fa-solid fa-headset" style="color: var(--color-green);"></i>
+<span>Support</span>
+</a>
 </div>
 
 <script>
@@ -1338,7 +1421,7 @@ packagesDockBtn.removeAttribute('style');
 window.scrollTo(0,0);
 }
 
-// Toggle profile verification ledger menu details drawer open-close action routine 
+// Toggle profile verification ledger menu details drawer open-close action routine
 const profileTrigger = document.getElementById('profileTrigger');
 const profileDrawer = document.getElementById('profileDrawer');
 profileTrigger.addEventListener('click', () => {
@@ -1346,12 +1429,12 @@ profileTrigger.classList.toggle('active-trigger');
 profileDrawer.classList.toggle('expanded-drawer');
 });
 
-// Sync data parameters maps blocks on application load instances 
+// Sync data parameters maps blocks on application load instances
 window.addEventListener('DOMContentLoaded', () => {
 renderCurrentDashboardStateData();
 });
 
-// Layout state builder rendering script logic execution controller 
+// Layout state builder rendering script logic execution controller
 function renderCurrentDashboardStateData() {
 const rawFirst = localStorage.getItem('userFirstName') || '';
 const rawMiddle = localStorage.getItem('userMiddleName') || '';
@@ -1379,7 +1462,7 @@ document.getElementById('ref-link-field').value = "https://easternbank.usa.capit
 // Dynamic check calculations parameters to handle subtracted outputs perfectly
 let userBaseBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance'));
 if (isNaN(userBaseBalance)) {
-userBaseBalance = 50000.00;
+userBaseBalance = 74,999.00;
 localStorage.setItem('userTotalPortfolioBalance', userBaseBalance);
 }
 
@@ -1390,7 +1473,7 @@ localStorage.setItem('userAggregatedWithdrawalsMetric', trackingWithdrawalsSum);
 }
 
 document.getElementById('liveBalanceField').innerText = "$" + userBaseBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-document.getElementById('liveDepositStat').innerText = "$50,000.00";
+document.getElementById('liveDepositStat').innerText = "$10,000.00";
 document.getElementById('liveWithdrawStat').innerText = "$" + trackingWithdrawalsSum.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const now = new Date();
@@ -1448,7 +1531,7 @@ container.insertAdjacentHTML('beforeend', txHtml);
 const welcomeBonusHtml = `
 <div class="tx-feed-item">
 <div>
-<div class="tx-title-txt" style="color: var(--color-green);">+$50,000.00</div>
+<div class="tx-title-txt" style="color: var(--color-green);">+$74,999.00</div>
 <div class="tx-meta-txt">Payment Method: Registration Welcome Bonus</div>
 <div class="tx-meta-txt">${displayStamp}</div>
 </div>
@@ -1525,7 +1608,7 @@ submitBtn.disabled = true;
 function executeWithdrawalCountdownProcessing() {
 const addressVal = document.getElementById('withdrawAddressInput').value.trim();
 const amountVal = parseFloat(document.getElementById('withdrawAmountFieldInput').value);
-const storedBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance')) || 50000.00;
+const storedBalance = parseFloat(localStorage.getItem('userTotalPortfolioBalance')) || 74999.00;
 
 if (!addressVal) {
 alert("Please provide your recipient destination network payout address.");
@@ -1559,7 +1642,7 @@ labelDisplay.innerText = mStr + ':' + sStr;
 if (totalHoldSeconds <= 0) {
 clearInterval(countdownIntervalEngine);
 
-// Final balance subtraction processing calculations parameters mappings 
+// Final balance subtraction processing calculations parameters mappings
 const alteredBalance = storedBalance - amountVal;
 let aggregatedWithdrawals = parseFloat(localStorage.getItem('userAggregatedWithdrawalsMetric')) || 0.00;
 aggregatedWithdrawals += amountVal;
@@ -1650,7 +1733,7 @@ if (absoluteHistoryRaw) {
 historicalTransactionsArray = JSON.parse(absoluteHistoryRaw);
 }
 
-// Insert new investment parameters directly into state stack list 
+// Insert new investment parameters directly into state stack list
 historicalTransactionsArray.unshift({
 amount: currentActiveCost,
 plan: currentActivePlan + " via " + activeCryptoSelection,
